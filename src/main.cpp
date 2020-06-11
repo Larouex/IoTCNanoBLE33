@@ -205,6 +205,7 @@ void loop() {
 
     // when the central disconnects, print it out:
     digitalWrite(ONBOARD_LED, LOW);
+    SetBuiltInRGB(LOW, LOW, LOW);
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
   }

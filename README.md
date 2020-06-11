@@ -83,11 +83,43 @@ If this is your first time programming an Arduino Nano board, I suggest you visi
 [LINK: Getting started with the Arduino NANO 33 BLE](https://www.arduino.cc/en/Guide/NANO33BLE)
 
 ## Getting Started with the Ardunio BLE Library
-The Ardunio Nano BLE 33 has a robust libaray for supporting Bluetooh Low Energy peripheral clients and Central applications (like the Raspberry Pi Gateway in this training series). I suggest that you read through the documentation and overview, it is detailed and well done. This will give you the foundation for the code we will be deploying to our device.
+The Ardunio Nano BLE 33 has a robust library for supporting Bluetooh Low Energy "Peripheral Clients" and "Central BLE" applications (like the Raspberry Pi Gateway we are creating in this training series).
+
+I suggest that you read through the documentation as it is detailed and very well done. This will give you the foundation for the code we will be deploying to our device.
 
 [LINK: ArduinoBLE library](https://www.arduino.cc/en/Reference/ArduinoBLE)
 
 
+## The Code
+Let's walk through the code and I will explain the capabilities. It is the simpliest of the sketches in the training and the other Nano devices expose more telemetry, properties and commands.
 
+Overall the sketch is fairly simple. We have three elements we will be sending as Bluetooth characteristics from our Peripheral device.
 
+* Version - single value, read only
+* Battery Status - value from 1-10, read only
+* Telemetry Frequence - 1000ms by default, read and write
+
+This section sets up the pins we will be using for Led indication of status. These are all onboard Led's hosted on the Nano BLE 33. The onboard Led is Orange and shown with the orange box outline and the other is a 3 pin RGB Led with the RGB box outline.
+
+![Leds](./Assets/nano-ble-33-leds.png)
+
+```c++
+/* --------------------------------------------------------------------------
+    Leds we manipulate for Status, etc.
+   -------------------------------------------------------------------------- */
+#define ONBOARD_LED     13
+#define RED_LIGHT_PIN   22
+#define GREEN_LIGHT_PIN 23
+#define BLUE_LIGHT_PIN  24
+```
+
+This section is where we define the UUID associated with the BLE Service advertisement.
+
+```c++
+/* --------------------------------------------------------------------------
+    BLE Service Definition
+   -------------------------------------------------------------------------- */
+#define LAROUEX_BLE_SERVICE_UUID(val) ("6F165338-" val "-43B9-837B-41B1A3C86EC1")
+BLEService blePeripheral(LAROUEX_BLE_SERVICE_UUID("0000")); 
+```
  
