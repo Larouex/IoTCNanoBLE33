@@ -1,7 +1,7 @@
 /* ==========================================================================
     File:     main.cpp
     Author:   Larry W Jordan Jr (larouex@gmail.com)
-    Purpose:  Arduino Nano BLE  33 example for Bluetooth Connectivity
+    Purpose:  Arduino Nano BLE 33 example for Bluetooth Connectivity
               to IoT Gateway Device working with Azure IoT Central
     Online:   www.hackinmakin.com
 
@@ -19,12 +19,10 @@
 #define BLUE_LIGHT_PIN 24
 
 /* --------------------------------------------------------------------------
-    Previous Basttery Level Monitors
+    Previous Battery Level Monitors
    -------------------------------------------------------------------------- */
 int oldBatteryLevel = 0;  // last battery level reading from analog input
 long previousMillis =  0;  // last time the battery level was checked, in ms
-
-
 
 /* --------------------------------------------------------------------------
     BLE Service Characteristic - readable by the Gateway
@@ -37,10 +35,7 @@ int telemetryFrequency = 500;
 bool isConnected = false;
 
 /* --------------------------------------------------------------------------
-    Function to set the RGB LED to the color of the battery charge
-      * Green >=50%
-      * Yellow <= 49% && >=10%
-      * Red <=9%
+    Function to set the onboard Nano RGB LED
    -------------------------------------------------------------------------- */
 void SetBuiltInRGB(
   PinStatus RED_LIGHT_PIN_VALUE,
@@ -53,16 +48,22 @@ void SetBuiltInRGB(
     return;
 }
 
+/* --------------------------------------------------------------------------
+    Function to set the RGB LED to the color of the battery charge
+      * Green >=50%
+      * Yellow <= 49% && >=20%
+      * Red <=19%
+   -------------------------------------------------------------------------- */
 void BatteryCheck(int level) {
-  if (level >=7 )
+  if (level >=5 )
   {
     Serial.println("BatteryCheck Set Green");
     SetBuiltInRGB(HIGH, HIGH, LOW);
   }
-  else if (level >=3 and level <= 6 )
+  else if (level >=2 and level <= 4 )
   {
     Serial.println("BatteryCheck Set Yellow");
-    SetBuiltInRGB(HIGH, LOW, HIGH);
+    SetBuiltInRGB(LOW, HIGH, LOW);
   }
   else
   {
@@ -77,14 +78,16 @@ void BatteryCheck(int level) {
     This is used here to simulate the charge level of a battery.
    -------------------------------------------------------------------------- */
 void UpdateBatteryLevel() {
-  int battery = analogRead(A0);
-  int batteryLevel = map(battery, 0, 1023, 0, 100);
+  
+  int batteryLevel = 1 + rand() % 10;
 
-  if (batteryLevel != oldBatteryLevel) {      // if the battery level has changed
-    Serial.print("Battery Level % is now: "); // print it
+  // only if the battery level has changed
+  if (batteryLevel != oldBatteryLevel) {      
+    Serial.print("Battery Level % is now: ");
     Serial.println(batteryLevel);
-    batteryChargedCharacteristic.writeValue(batteryLevel);  // and update the battery level characteristic
-    oldBatteryLevel = batteryLevel;           // save the level for next comparison
+    // and update the battery level characteristic to BLE
+    batteryChargedCharacteristic.writeValue(batteryLevel);
+    oldBatteryLevel = batteryLevel;
     BatteryCheck(batteryLevel);
   }
 }
@@ -94,6 +97,7 @@ void UpdateBatteryLevel() {
    -------------------------------------------------------------------------- */
 void telemetryFrequencyCharacteristicWritten(BLEDevice central, BLECharacteristic characteristic) {
   SetBuiltInRGB(HIGH, LOW, LOW); // blue
+  delay(1000);
   // central wrote new value to characteristic, update LED
   Serial.print("Characteristic event, written: ");
   Serial.printf("Telemetery Frequencey %d", telemetryFrequencyCharacteristic.value());
@@ -104,12 +108,11 @@ void telemetryFrequencyCharacteristicWritten(BLEDevice central, BLECharacteristi
    -------------------------------------------------------------------------- */
 void setup() {
   
-  // Setup out battery LED
+  // Setup our Pins
   pinMode(RED_LIGHT_PIN, OUTPUT);
   pinMode(GREEN_LIGHT_PIN, OUTPUT);
   pinMode(BLUE_LIGHT_PIN, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
-
 
   Serial.begin(9600);    // initialize serial communication
   while (!Serial);
