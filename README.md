@@ -33,23 +33,14 @@ regardless of which operating system you are working on.
 
 ![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
 
-      <div class="row">
-        <div class="col-md-1 offset-md-2">
-          <img src="./Assets/vs-code-icon.png" height="50" alt="step 1" class="img-responsive rounded">
-        </div>
-        <div class="col-md-7">
-          <h5>Install Visual Studio Code</h5>
-          <h6>
-            <a href="https://code.visualstudio.com/download">Visual Studio Code Installation Page</a>
-          </h6>
-          <p>
-            Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. This is the 
-            IDE we will use to write code and deploy to the our BLE Devices and the Raspberry Pi Gateway. 
-          </p>
-          <hr/>
-        </div>
-      </div>
+![Some Title](./Assets/vs-code-icon.png "Visual Studio Code")
 
 #### Install Visual Studio Code
+
+| - | - |
+|---|---|
+| I am text to the left  | ![Flowers](./Assets/vs-code-icon.png) |
+| ![Flowers](./Assets/vs-code-icon.png) | I am text to the right |
+
 [LINK: Visual Studio Code Installation Page](https://code.visualstudio.com/download)
 Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. This is the IDE we will use to write code and deploy to the our BLE Devices and the Raspberry Pi Gateway. 
