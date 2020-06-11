@@ -22,7 +22,7 @@ microcontroller platforms. If you want to see how easy it is to create a Bluetoo
 ### Arduino Nano BLE 33 - PINOUT
 ![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
 
-## Project Details and Settign up Your Development Toolchain
+## Setting up Your Development Toolchain
 The code in this repository depends on Ardunio, Visual Studio Code and PlatformIO.
 
 ### Your Local Machine
@@ -33,7 +33,7 @@ regardless of which operating system you are working on.
 
 | - | ### Install These Tools |
 |---|---|
+| ![Arduino](./Assets/arduino-icon-100.png) | [LINK: Arduino Download Page](https://www.arduino.cc/en/Main/Software) - We will not be using the Arduino IDE directly in our project, but we do have dependencies on libraries and SDK's bits that get installed with the Arduino package. Install the complete Arduino IDE for your operating system. |
 | ![Visual Studio Code](./Assets/vs-code-icon-100.png) | [LINK: Visual Studio Code Installation Page](https://code.visualstudio.com/download) - Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. This is the IDE we will use to write code and deploy to the our BLE Devices and the Raspberry Pi Gateway.  |
 | ![PlatformIO](./Assets/platformio-icon-100.png) | [LINK: PlatformIO VS Code Install](https://platformio.org/platformio-ide) - PlatformIO is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. It works seamlessly with Visual Studio Code. |
-| ![Arduino](./Assets/arduino-icon-100.png) | [LINK: Arduino Download Page](https://www.arduino.cc/en/Main/Software) - We will not be using the Arduino IDE directly in our project, but we do have dependencies on libraries and SDK's bits that get installed with the Arduino package. Install the complete Arduino IDE for your operating system. |
 
