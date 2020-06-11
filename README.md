@@ -31,11 +31,7 @@ developing our BLE devices and the Raspberry Pi Gateway device. Our main develop
 from Arduino and other open source projects, but it will be the central place where all our development will occur making it easy to follow along 
 regardless of which operating system you are working on.
 
-![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
-
-#### Installations
-
-| - | Install These Tools |
+| - | ### Install These Tools |
 |---|---|
 | ![Visual Studio Code](./Assets/vs-code-icon-100.png) | [LINK: Visual Studio Code Installation Page](https://code.visualstudio.com/download) - Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. This is the IDE we will use to write code and deploy to the our BLE Devices and the Raspberry Pi Gateway.  |
 | ![PlatformIO](./Assets/platformio-icon-100.png) | [LINK: PlatformIO VS Code Install](https://platformio.org/platformio-ide) - PlatformIO is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. It works seamlessly with Visual Studio Code. |
