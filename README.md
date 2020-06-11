@@ -3,7 +3,7 @@
 ## Overview
 This repository is part of a training and project series for Azure IoT Central. The name of the series is "Raspberry Pi Gateway and Arduino Nano BLE Devices for Azure Iot Central" and is located at...
 
-[NEXT: Link to the Training Site](http://www.hackinmakin.com/Raspberry%20Pi%20Gateway%20and%20BLE/index.html)
+[LINK: Training & Project Site for Raspberry Pi Gateway and Arduino Nano BLE Devices for Azure Iot Central](http://www.hackinmakin.com/Raspberry%20Pi%20Gateway%20and%20BLE/index.html)
 
 
 ### Arduino Nano 33 BLE
@@ -22,3 +22,18 @@ microcontroller platforms. If you want to see how easy it is to create a Bluetoo
 ### Arduino Nano BLE 33 - PINOUT
 ![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
 
+## Project Details and Settign up Your Development Toolchain
+The code in this repository depends on Ardunio, Visual Studio Code and PlatformIO.
+
+### Your Local Machine
+The development "toolchain" refers to all of the various tools, SDK's and bits we need to install on your machine to facilitate a smooth experience 
+developing our BLE devices and the Raspberry Pi Gateway device. Our main development tool will be Visual Studio code. It has dependencies on tools 
+from Arduino and other open source projects, but it will be the central place where all our development will occur making it easy to follow along 
+regardless of which operating system you are working on.
+
+![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
+
+![Some Title](./Assets/vs-code-icon.png){:style="float: right;margin-right: 7px;margin-top: 7px;"}
+#### Install Visual Studio Code
+[LINK: Visual Studio Code Installation Page](https://code.visualstudio.com/download)
+Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. This is the IDE we will use to write code and deploy to the our BLE Devices and the Raspberry Pi Gateway. 
