@@ -11,28 +11,44 @@
 #include <ArduinoBLE.h>
  
 /* --------------------------------------------------------------------------
+    Frequency of Simulation on Battery Level
+   -------------------------------------------------------------------------- */
+int TELEMETRY_FREQUENCY = 500;
+
+/* --------------------------------------------------------------------------
     Leds we manipulate for Status, etc.
    -------------------------------------------------------------------------- */
-#define ONBOARD_LED 13
-#define RED_LIGHT_PIN 22
+#define ONBOARD_LED     13
+#define RED_LIGHT_PIN   22
 #define GREEN_LIGHT_PIN 23
-#define BLUE_LIGHT_PIN 24
+#define BLUE_LIGHT_PIN  24
 
 /* --------------------------------------------------------------------------
     Previous Battery Level Monitors
    -------------------------------------------------------------------------- */
-int oldBatteryLevel = 0;  // last battery level reading from analog input
-long previousMillis =  0;  // last time the battery level was checked, in ms
+int OLD_BATTERY_LEVEL = 0;  // last battery level reading from analog input
 
 /* --------------------------------------------------------------------------
-    BLE Service Characteristic - readable by the Gateway
+    Broadcast Version for BLE Device
    -------------------------------------------------------------------------- */
-#define larouexServiceId "6F165338-BF34-43B9-837B-41B1A3C86EC1"
-BLEService bleService(larouexServiceId); 
-BLEFloatCharacteristic batteryChargedCharacteristic(larouexServiceId, BLERead);
-BLEIntCharacteristic telemetryFrequencyCharacteristic(larouexServiceId, BLERead | BLEWrite);
-int telemetryFrequency = 500;
-bool isConnected = false;
+const int VERSION = 0x00000001;
+
+/* --------------------------------------------------------------------------
+    BLE Service Definition
+   -------------------------------------------------------------------------- */
+#define LAROUEX_BLE_SERVICE_UUID(val) ("6F165338-" val "-43B9-837B-41B1A3C86EC1")
+BLEService blePeripheral(LAROUEX_BLE_SERVICE_UUID("0000")); 
+
+/* --------------------------------------------------------------------------
+    BLE Service Characteristics - Readable by the Gateway
+   -------------------------------------------------------------------------- */
+BLEUnsignedIntCharacteristic  versionCharacteristic(LAROUEX_BLE_SERVICE_UUID("1001"), BLERead);
+BLEFloatCharacteristic        batteryChargedCharacteristic(LAROUEX_BLE_SERVICE_UUID("2001"), BLERead | BLENotify | BLEIndicate);
+BLEIntCharacteristic          telemetryFrequencyCharacteristic(LAROUEX_BLE_SERVICE_UUID("3001"), BLERead | BLEWrite| BLENotify | BLEIndicate);
+
+BLEDescriptor versionCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("1002"), "Version");
+BLEDescriptor batteryChargedCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("2002"), "Battery Charged");
+BLEDescriptor telemetryFrequencyCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("3002"), "Telemetry Frequency");
 
 /* --------------------------------------------------------------------------
     Function to set the onboard Nano RGB LED
@@ -82,25 +98,27 @@ void UpdateBatteryLevel() {
   int batteryLevel = 1 + rand() % 10;
 
   // only if the battery level has changed
-  if (batteryLevel != oldBatteryLevel) {      
+  if (batteryLevel != OLD_BATTERY_LEVEL) {      
     Serial.print("Battery Level % is now: ");
     Serial.println(batteryLevel);
     // and update the battery level characteristic to BLE
     batteryChargedCharacteristic.writeValue(batteryLevel);
-    oldBatteryLevel = batteryLevel;
+    OLD_BATTERY_LEVEL = batteryLevel;
     BatteryCheck(batteryLevel);
   }
+
+  delay(TELEMETRY_FREQUENCY);
 }
 
 /* --------------------------------------------------------------------------
-    Event Handler for Telemtery Frequency upadated from Central
+    Event Handler for Telemetery Frequency upadated from Central
    -------------------------------------------------------------------------- */
 void telemetryFrequencyCharacteristicWritten(BLEDevice central, BLECharacteristic characteristic) {
   SetBuiltInRGB(HIGH, LOW, LOW); // blue
   delay(1000);
-  // central wrote new value to characteristic, update LED
-  Serial.print("Characteristic event, written: ");
-  Serial.printf("Telemetery Frequencey %d", telemetryFrequencyCharacteristic.value());
+  Serial.print("Characteristic event - Telemetery Frequencey:");
+  Serial.println(TELEMETRY_FREQUENCY);
+  TELEMETRY_FREQUENCY = telemetryFrequencyCharacteristic.value();
 }
 
 /* --------------------------------------------------------------------------
@@ -129,32 +147,39 @@ void setup() {
     and can be used by remote devices to identify this BLE device
     The name can be changed but maybe be truncated based on space left in advertisement packet
   */
-  BLE.setLocalName("larouexble33");
-  BLE.setDeviceName("larouexiotcble33");
-  BLE.setAdvertisedService(bleService);
+  BLE.setLocalName("LarouexBLE");
+  BLE.setDeviceName("Larouex BLE Device 001");
+  BLE.setAdvertisedService(blePeripheral);
 
   // add the services
-  bleService.addCharacteristic(batteryChargedCharacteristic); 
-  bleService.addCharacteristic(telemetryFrequencyCharacteristic); 
-  BLE.addService(bleService);
+  blePeripheral.addCharacteristic(versionCharacteristic); 
+  versionCharacteristic.addDescriptor(versionCharacteristicDesc);
+  versionCharacteristic.setValue(VERSION);
+    
+  blePeripheral.addCharacteristic(batteryChargedCharacteristic); 
+  batteryChargedCharacteristic.addDescriptor(batteryChargedCharacteristicDesc);
+  batteryChargedCharacteristic.writeValue(OLD_BATTERY_LEVEL);
+  batteryChargedCharacteristic.broadcast();
 
-  // set defaults
-  batteryChargedCharacteristic.writeValue(oldBatteryLevel);
-  telemetryFrequencyCharacteristic.writeValue(telemetryFrequency);
+  blePeripheral.addCharacteristic(telemetryFrequencyCharacteristic); 
+  telemetryFrequencyCharacteristic.addDescriptor(telemetryFrequencyCharacteristicDesc);
+  telemetryFrequencyCharacteristic.setValue(TELEMETRY_FREQUENCY);
+  
+  BLE.addService(blePeripheral);
 
   // assign event handler for Frequency Updates
   telemetryFrequencyCharacteristic.setEventHandler(BLEWritten, telemetryFrequencyCharacteristicWritten);
-
-  SetBuiltInRGB(HIGH, HIGH, HIGH);
-  digitalWrite(LED_BUILTIN, LOW);
 
   /* Start advertising BLE.  It will start continuously transmitting BLE
      advertising packets and will be visible to remote BLE central devices
      until it receives a new connection */
   BLE.advertise();
 
-  Serial.println("Bluetooth device active, waiting for connections...");
+  // Set leds to idle
+  digitalWrite(LED_BUILTIN, LOW);
+  SetBuiltInRGB(LOW, LOW, LOW);
 
+  Serial.println("Bluetooth device active, waiting for connections...");
 }
 
 /* --------------------------------------------------------------------------
@@ -164,24 +189,22 @@ void loop() {
 
   // listen for BLE peripherals to connect:
   BLEDevice central = BLE.central();
-  SetBuiltInRGB(HIGH, LOW, HIGH); // blue
 
   // if a central is connected to peripheral:
   if (central) {
+    
+    digitalWrite(ONBOARD_LED, HIGH);
     Serial.print("Connected to central: ");
     // print the central's MAC address:
     Serial.println(central.address());
 
     // while the central is still connected to peripheral:
     while (central.connected()) {
-      long currentMillis = millis();
-      if (currentMillis - previousMillis >= 500) {
-        previousMillis = currentMillis;
-        UpdateBatteryLevel();
-      }
+      UpdateBatteryLevel();
     }
 
     // when the central disconnects, print it out:
+    digitalWrite(ONBOARD_LED, LOW);
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
   }

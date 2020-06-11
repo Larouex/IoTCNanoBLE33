@@ -43,6 +43,12 @@ One of the more popular and easy to use is LightBlue. Here is the overview from 
 
 ![LightBlue](./Assets/lightblue-icon-100.png)
 
+Apple Devices
+[LINK: Light Blue - Apple App Store](https://apps.apple.com/us/app/lightblue/id557428110)
+
+Andriod Devices
+[LINK: Light Blue - Andriod App Store](https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer&hl=en_US)
+
 LightBlue® can connect you to all of your devices that use Bluetooth Low Energy (also known as Bluetooth Smart, or Bluetooth Light).
 
 LightBlue® has two modes, central and peripheral. In central mode, you can scan for and connect to all BLE devices around you. Once connected, you have a detailed view of all the device's profiles, from which you can read and write to characteristics and subscribe to notifications.
@@ -69,11 +75,18 @@ Key features:
 * Thoroughly log and share BLE events
 * Custom UI and extended support for connecting to Microchip AVR-BLE and PIC-BLE development boards
 
-Apple Devices
-[LINK: Light Blue - Apple App Store](https://apps.apple.com/us/app/lightblue/id557428110)
+## Connecting Your Board
+The only thing required for this project to work with you Nano is to hook it up with a Mini-B USB cable. Once you plug it and are connected, the onboard power led will light up green.
 
-Andriod Devices
-[LINK: Light Blue - Andriod App Store](https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer&hl=en_US)
+If this is your first time programming an Arduino Nano board, I suggest you visit and try a couple samples via the Arduino IDE (which we have installed) just to take a test drive and make sure you have the working connection to your board.
+
+[LINK: Getting started with the Arduino NANO 33 BLE](https://www.arduino.cc/en/Guide/NANO33BLE)
+
+## Getting Started with the Ardunio BLE Library
+The Ardunio Nano BLE 33 has a robust libaray for supporting Bluetooh Low Energy peripheral clients and Central applications (like the Raspberry Pi Gateway in this training series). I suggest that you read through the documentation and overview, it is detailed and well done. This will give you the foundation for the code we will be deploying to our device.
+
+[LINK: ArduinoBLE library](https://www.arduino.cc/en/Reference/ArduinoBLE)
+
 
 
 
