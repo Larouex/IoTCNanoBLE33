@@ -33,8 +33,8 @@ regardless of which operating system you are working on.
 
 ![alt text](./Assets/nano33blepinout.png "Arduino Nano 33 BLE Pinout") 
 
-<div style="float: right; height: 100;">
-    ![Some Title](./Assets/vs-code-icon.png)
+<div style="float: right; ">
+    ![alt text](./Assets/vs-code-icon.png "Visual Studio Code") 
 </div>
 
 #### Install Visual Studio Code
