@@ -137,3 +137,112 @@ BLEDescriptor versionCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("1002"), "Vers
 BLEDescriptor batteryChargedCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("2002"), "Battery Charged");
 BLEDescriptor telemetryFrequencyCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("3002"), "Telemetry Frequency");
 ```
+
+This is the callback function we execute when Central sends a updated value for TELEMETRY_FREQUENCY
+
+```c++
+/* --------------------------------------------------------------------------
+    Event Handler for Telemetery Frequency upadated from Central
+   -------------------------------------------------------------------------- */
+void telemetryFrequencyCharacteristicWritten(BLEDevice central, BLECharacteristic characteristic) {
+  SetBuiltInRGB(HIGH, LOW, LOW); // blue
+  delay(1000);
+  Serial.print("Characteristic event - Telemetery Frequencey:");
+  Serial.println(TELEMETRY_FREQUENCY);
+  TELEMETRY_FREQUENCY = telemetryFrequencyCharacteristic.value();
+}
+```
+
+Below we setup the BLE characteristics and when Central connects, we send telemetry for Battery Level and respond to writes to the TELEMETRY_FREQUENCY.
+
+```c++
+/* --------------------------------------------------------------------------
+    Standard Sketch Setup
+   -------------------------------------------------------------------------- */
+void setup() {
+  
+  // Setup our Pins
+  pinMode(RED_LIGHT_PIN, OUTPUT);
+  pinMode(GREEN_LIGHT_PIN, OUTPUT);
+  pinMode(BLUE_LIGHT_PIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  Serial.begin(9600);    // initialize serial communication
+  while (!Serial);
+
+  // begin initialization
+  if (!BLE.begin()) {
+    Serial.println("Starting BLE Failed!");
+    while (1);
+  }
+  
+  /* 
+    Set a local name for the BLE device
+    This name will appear in advertising packets
+    and can be used by remote devices to identify this BLE device
+    The name can be changed but maybe be truncated based on space left in advertisement packet
+  */
+  BLE.setLocalName("LarouexBLE");
+  BLE.setDeviceName("Larouex BLE Device 001");
+  BLE.setAdvertisedService(blePeripheral);
+
+  // add the services
+  blePeripheral.addCharacteristic(versionCharacteristic); 
+  versionCharacteristic.addDescriptor(versionCharacteristicDesc);
+  versionCharacteristic.setValue(VERSION);
+    
+  blePeripheral.addCharacteristic(batteryChargedCharacteristic); 
+  batteryChargedCharacteristic.addDescriptor(batteryChargedCharacteristicDesc);
+  batteryChargedCharacteristic.writeValue(OLD_BATTERY_LEVEL);
+  batteryChargedCharacteristic.broadcast();
+
+  blePeripheral.addCharacteristic(telemetryFrequencyCharacteristic); 
+  telemetryFrequencyCharacteristic.addDescriptor(telemetryFrequencyCharacteristicDesc);
+  telemetryFrequencyCharacteristic.setValue(TELEMETRY_FREQUENCY);
+  
+  BLE.addService(blePeripheral);
+
+  // assign event handler for Frequency Updates
+  telemetryFrequencyCharacteristic.setEventHandler(BLEWritten, telemetryFrequencyCharacteristicWritten);
+
+  /* Start advertising BLE.  It will start continuously transmitting BLE
+     advertising packets and will be visible to remote BLE central devices
+     until it receives a new connection */
+  BLE.advertise();
+
+  // Set leds to idle
+  digitalWrite(LED_BUILTIN, LOW);
+  SetBuiltInRGB(LOW, LOW, LOW);
+
+  Serial.println("Bluetooth device active, waiting for connections...");
+}
+
+/* --------------------------------------------------------------------------
+    Standard Sketch Loop
+   -------------------------------------------------------------------------- */
+void loop() {
+
+  // listen for BLE peripherals to connect:
+  BLEDevice central = BLE.central();
+
+  // if a central is connected to peripheral:
+  if (central) {
+    
+    digitalWrite(ONBOARD_LED, HIGH);
+    Serial.print("Connected to central: ");
+    // print the central's MAC address:
+    Serial.println(central.address());
+
+    // while the central is still connected to peripheral:
+    while (central.connected()) {
+      UpdateBatteryLevel();
+    }
+
+    // when the central disconnects, print it out:
+    digitalWrite(ONBOARD_LED, LOW);
+    SetBuiltInRGB(LOW, LOW, LOW);
+    Serial.print(F("Disconnected from central: "));
+    Serial.println(central.address());
+  }
+}
+````
