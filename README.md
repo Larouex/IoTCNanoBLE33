@@ -95,9 +95,9 @@ Let's walk through the code and I will explain the capabilities. It is the simpl
 
 Overall the sketch is fairly simple. We have three elements we will be sending as Bluetooth characteristics from our Peripheral device.
 
-* Version - single value, read only
-* Battery Status - value from 1-10, read only
-* Telemetry Frequence - 1000ms by default, read and write
+* <b>Version</b> - single value, read only
+* <b>Battery Status</b> - value from 1-10, read only
+* <b>Telemetry Frequence</b> - 1000ms by default, read and write
 
 This section sets up the pins we will be using for Led indication of status. These are all onboard Led's hosted on the Nano BLE 33. The onboard Led is Orange and shown with the orange box outline and the other is a 3 pin RGB Led with the RGB box outline.
 
@@ -122,4 +122,18 @@ This section is where we define the UUID associated with the BLE Service adverti
 #define LAROUEX_BLE_SERVICE_UUID(val) ("6F165338-" val "-43B9-837B-41B1A3C86EC1")
 BLEService blePeripheral(LAROUEX_BLE_SERVICE_UUID("0000")); 
 ```
- 
+
+In this section  we define our characteristics and set thier unique ID's...
+
+```c++
+ /* --------------------------------------------------------------------------
+    BLE Service Characteristics - Readable by the Gateway
+   -------------------------------------------------------------------------- */
+BLEUnsignedIntCharacteristic  versionCharacteristic(LAROUEX_BLE_SERVICE_UUID("1001"), BLERead);
+BLEFloatCharacteristic        batteryChargedCharacteristic(LAROUEX_BLE_SERVICE_UUID("2001"), BLERead | BLENotify | BLEIndicate);
+BLEIntCharacteristic          telemetryFrequencyCharacteristic(LAROUEX_BLE_SERVICE_UUID("3001"), BLERead | BLEWrite| BLENotify | BLEIndicate);
+
+BLEDescriptor versionCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("1002"), "Version");
+BLEDescriptor batteryChargedCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("2002"), "Battery Charged");
+BLEDescriptor telemetryFrequencyCharacteristicDesc (LAROUEX_BLE_SERVICE_UUID("3002"), "Telemetry Frequency");
+```
