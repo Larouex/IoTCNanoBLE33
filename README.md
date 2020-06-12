@@ -1,4 +1,4 @@
-# Arduino Nana BLE 33 for Azure IoT Central
+# Arduino Nano BLE 33 for Azure IoT Central
 
 ## Overview
 This repository is part of a training and project series for Azure IoT Central. The name of the series is "Raspberry Pi Gateway and Arduino Nano BLE Devices for Azure Iot Central" and is located at...
@@ -83,7 +83,7 @@ If this is your first time programming an Arduino Nano board, I suggest you visi
 [LINK: Getting started with the Arduino NANO 33 BLE](https://www.arduino.cc/en/Guide/NANO33BLE)
 
 ## Getting Started with the Ardunio BLE Library
-The Ardunio Nano BLE 33 has a robust library for supporting Bluetooh Low Energy "Peripheral Clients" and "Central BLE" applications (like the Raspberry Pi Gateway we are creating in this training series).
+The Ardunio Nano BLE 33 has a robust library for supporting Bluetooth Low Energy "Peripheral Clients" and "Central BLE" applications (like the Raspberry Pi Gateway we are creating in this training series).
 
 I suggest that you read through the documentation as it is detailed and very well done. This will give you the foundation for the code we will be deploying to our device.
 
