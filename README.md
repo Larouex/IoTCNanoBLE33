@@ -78,9 +78,13 @@ Key features:
 ## Connecting Your Board
 The only thing required for this project to work with you Nano is to hook it up with a Mini-B USB cable. Once you plug it and are connected, the onboard power led will light up green.
 
+[LINK: Getting started with the Arduino NANO 33 BLE](https://www.arduino.cc/en/Guide/NANO33BLE)
+
 If this is your first time programming an Arduino Nano board, I suggest you visit and try a couple samples via the Arduino IDE (which we have installed) just to take a test drive and make sure you have the working connection to your board.
 
-[LINK: Getting started with the Arduino NANO 33 BLE](https://www.arduino.cc/en/Guide/NANO33BLE)
+## Here is a quick video introducing how to use Visual Studio Code and PlatformIO
+[![](http://img.youtube.com/vi/H45gMeHp_XA/0.jpg)](http://www.youtube.com/watch?v=H45gMeHp_XA "Quick Intro to VS Code and PlatformIO")
+
 
 ## Getting Started with the Ardunio BLE Library
 The Ardunio Nano BLE 33 has a robust library for supporting Bluetooth Low Energy "Peripheral Clients" and "Central BLE" applications (like the Raspberry Pi Gateway we are creating in this training series).
