@@ -1,3 +1,16 @@
 {
-    "python.pythonPath": "C:\\Users\\larou\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Users\\larou\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "files.associations": {
+        "functional": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "mstd_iterator": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
+    }
 }
