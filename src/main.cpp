@@ -185,7 +185,6 @@ void UpdateIMU() {
       Serial.println(acceleration[2]);
     }
   }
-
   #ifdef DEBUG
     if (!orientationCharacteristic.subscribed())
     {
@@ -590,4 +589,3 @@ void loop() {
     Serial.println(central.address());
   }
 }
-
