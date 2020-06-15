@@ -99,13 +99,14 @@ Let's walk through the code and I will explain the capabilities. It is the simpl
 
 Overall the sketch is fairly simple. We have three elements we will be sending as Bluetooth characteristics from our Peripheral device.
 
-* VERSION_CHARACTERISTIC
-* BATTERYCHARGED_CHARACTERISTIC
-* TELEMETRYFREQUENCY_CHARACTERISTIC
-* ACCELEROMETER_CHARACTERISTIC
-* GYROSCOPE_CHARACTERISTIC
-* MAGNETOMETER_CHARACTERISTIC
-* ORIENTATION_CHARACTERISTIC
-* RGBLED_CHARACTERISTIC
+* <b>VERSION</b>
+* <b>BATTERY CHARGED</b>
+* <b>TELEMETRY FREQUENCY</b>
+* <b>ACCELEROMETER</b>
+* <b>GYROSCOPE</b>
+* <b>MAGNETOMETER</b>
+* <b>ORIENTATION</b>
+* <b>RGB LED</b>
 
+## Video - Overview of the Nano 33 BLW Code
 [![](http://img.youtube.com/vi/jphIzdP3grc/0.jpg)](http://www.youtube.com/watch?v=jphIzdP3grc "Overview Nano 33 BLE Code")
