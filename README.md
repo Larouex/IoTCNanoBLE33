@@ -21,10 +21,7 @@ The communications chipset on the Nano 33 BLE can be both a BLE and Bluetooth® 
 The code in this repository depends on Ardunio, Visual Studio Code and PlatformIO.
 
 ### Your Local Machine
-The development "toolchain" refers to all of the various tools, SDK's and bits we need to install on your machine to facilitate a smooth experience 
-developing our BLE devices and the Raspberry Pi Gateway device. Our main development tool will be Visual Studio code. It has dependencies on tools 
-from Arduino and other open source projects, but it will be the central place where all our development will occur making it easy to follow along 
-regardless of which operating system you are working on.
+The development "toolchain" refers to all of the various tools, SDK's and bits we need to install on your machine to facilitate a smooth experience developing our BLE devices and the Raspberry Pi Gateway device. Our main development tool will be Visual Studio code. It has dependencies on tools from Arduino and other open source projects, but it will be the central place where all our development will occur making it easy to follow along  regardless of which operating system you are working on.
 
 | - | Install These Tools |
 |---|---|
@@ -97,7 +94,7 @@ I suggest that you read through the documentation as it is detailed and very wel
 ## The Code
 Let's walk through the code and I will explain the capabilities. It is the simpliest of the sketches in the training and the other Nano devices expose more telemetry, properties and commands.
 
-Overall the sketch is fairly simple. We have three elements we will be sending as Bluetooth characteristics from our Peripheral device.
+The following will be the Bluetooth characteristics we will be exposing from our Peripheral device...
 
 * <b>VERSION</b>
 * <b>BATTERY CHARGED</b>
