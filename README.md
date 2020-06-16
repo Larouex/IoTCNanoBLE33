@@ -108,5 +108,5 @@ The following will be the Bluetooth characteristics we will be exposing from our
 ### ACCELEROMETER, GYROSCOPE & MAGNETOMETER
 The IMU is a LSM9DS1, it is a 3-axis accelerometer, 3-axis gyroscope and 3-axis magnetometer. This chip, made by ST Microelectronics, is a standard component supported by library ArduinoLSM9DS1.
 
-## Video - Overview of the Nano 33 BLW Code
+## Video - Overview of the Nano 33 BLE Code
 [![](http://img.youtube.com/vi/jphIzdP3grc/0.jpg)](http://www.youtube.com/watch?v=jphIzdP3grc "Overview Nano 33 BLE Code")
