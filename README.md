@@ -108,5 +108,8 @@ Overall the sketch is fairly simple. We have three elements we will be sending a
 * <b>ORIENTATION</b>
 * <b>RGB LED</b>
 
+### ACCELEROMETER, GYROSCOPE & MAGNETOMETER
+The IMU is a LSM9DS1, it is a 3-axis accelerometer, 3-axis gyroscope and 3-axis magnetometer. This chip, made by ST Microelectronics, is a standard component supported by library ArduinoLSM9DS1.
+
 ## Video - Overview of the Nano 33 BLW Code
 [![](http://img.youtube.com/vi/jphIzdP3grc/0.jpg)](http://www.youtube.com/watch?v=jphIzdP3grc "Overview Nano 33 BLE Code")
