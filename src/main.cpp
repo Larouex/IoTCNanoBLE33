@@ -184,7 +184,7 @@ void UpdateIMU() {
   float gyroDPS[3];
   float magneticField[3];
 
-  if ((orientationCharacteristic.subscribed() || accelerometerCharacteristic.subscribed()) && IMU.accelerationAvailable()) {
+  if (IMU.accelerationAvailable()) {
     
     // read the Accelerometer
     float x, y, z;
@@ -195,7 +195,6 @@ void UpdateIMU() {
 
     if (accelerometerCharacteristic.subscribed()) {
       accelerometerCharacteristic.writeValue(acceleration, sizeof(acceleration));
-      
       Serial.print("[IMU] Acceleration(X): ");
       Serial.println(acceleration[0]);
       Serial.print("[IMU] Acceleration(Y): ");
@@ -203,17 +202,15 @@ void UpdateIMU() {
       Serial.print("[IMU] Acceleration(Z): ");
       Serial.println(acceleration[2]);
     }
+    #ifdef DEBUG
+      if (!accelerometerCharacteristic.subscribed())
+      {
+        Serial.println("[IMU] Please Subscribe to Acceleration for Notifications");
+      }
+    #endif
   }
-  #ifdef DEBUG
-    if (!orientationCharacteristic.subscribed())
-    {
-      Serial.println("[IMU] Please Subscribe to Orientation & Acceleration for Notifications");
-    }
-  #endif
 
-
-  if ((orientationCharacteristic.subscribed() || gyroscopeCharacteristic.subscribed()) && IMU.gyroscopeAvailable()) {
-    
+  if (IMU.gyroscopeAvailable()) {
     // read the Gyro
     float x, y, z;
     IMU.readGyroscope(x, y, z);
@@ -223,7 +220,6 @@ void UpdateIMU() {
 
     if (gyroscopeCharacteristic.subscribed()) {
       gyroscopeCharacteristic.writeValue(gyroDPS, sizeof(gyroDPS));
-
       Serial.print("[IMU] Gyroscope(X): ");
       Serial.println(gyroDPS[0]);
       Serial.print("[IMU] Gyroscope(Y): ");
@@ -231,16 +227,16 @@ void UpdateIMU() {
       Serial.print("[IMU] Gyroscope(Z): ");
       Serial.println(gyroDPS[2]);
     }
+
+    #ifdef DEBUG
+      if (!gyroscopeCharacteristic.subscribed())
+      {
+        Serial.println("[IMU] Please Subscribe to Gyroscope for Notifications");
+      }
+    #endif
   }
 
-  #ifdef DEBUG
-    if (!orientationCharacteristic.subscribed())
-    {
-      Serial.println("[IMU] Please Subscribe to Orientation & Gyroscope for Notifications");
-    }
-  #endif
-
-  if ((orientationCharacteristic.subscribed() || magnetometerCharacteristic.subscribed()) && IMU.magneticFieldAvailable()) {
+  if (IMU.magneticFieldAvailable()) {
     
     // read the Mag
     float x, y, z;
@@ -259,16 +255,21 @@ void UpdateIMU() {
       Serial.print("[IMU] Magnetometer(Z): ");
       Serial.println(magneticField[2]);
     }
+    #ifdef DEBUG
+      if (!magnetometerCharacteristic.subscribed())
+      {
+        Serial.println("[IMU] Please Subscribe to Magnetometer for Notifications");
+      }
+    #endif
   }
 
-  #ifdef DEBUG
-    if (!orientationCharacteristic.subscribed() && !magnetometerCharacteristic.subscribed())
-    {
-      Serial.println("[IMU] Please Subscribe to Magnetometer & Orientation for Notifications");
-    }
-  #endif
-
-  if (orientationCharacteristic.subscribed() && (micros() - msecsPrevious >= msecsPerReading)) {
+  if (  orientationCharacteristic.subscribed() && 
+        accelerometerCharacteristic.subscribed() &&
+        magnetometerCharacteristic.subscribed() &&
+        gyroscopeCharacteristic.subscribed()) {
+  
+    if (!(micros() - msecsPrevious >= msecsPerReading))
+      return;
     
     float heading, pitch, roll;
     
@@ -583,7 +584,7 @@ void loop() {
 
   // listen for BLE peripherals to connect:
   BLEDevice central = BLE.central();
-
+  
   if (readyToConnectDelayActive && ((millis() - readyToConnectDelay) >= 1000)) {
     SetBuiltInRGB(HIGH, HIGH, LOW);
     readyToConnectDelay = millis();
@@ -612,7 +613,7 @@ void loop() {
     // while the central is still connected to peripheral:
     while (central.connected()) {
       
-      if (bleDelayActive && ((millis() - telemetryStartDelay) >= 10000)) {
+      if (bleDelayActive && ((millis() - bleStartDelay) >= 5000)) {
         bleDelayActive = false;
       }
 
@@ -620,6 +621,7 @@ void loop() {
         if (telemetryDelayActive && ((millis() - telemetryStartDelay) >= telemetryFrequency)) {
           UpdateBatteryLevel();
           UpdateIMU();
+          telemetryStartDelay = millis();
         }
       }
 
